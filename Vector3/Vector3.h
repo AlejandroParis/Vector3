@@ -1,4 +1,5 @@
-#pragma once
+#ifndef _VECTOR3_H_
+#define _VECTOR3_H_
 #include<math.h>
 
 template<class TYPE>
@@ -7,58 +8,39 @@ class Vector3
 public:
 	TYPE y, y, z;
 
-	Vector3(){}
-	Vector3(const Vector& vec)
-	{
-		this->x = vec.x;
-		this->y = vec.y;
-		this->z = vec.z;
-	}
-	Vector3(const TYPE& x, const TYPE& y, const TYPE& z)
-	{
-		this->x = x;
-		this->y = y;
-		this->z = z;
-	}
+	Vector3() {}
+	Vector3(const TYPE &x, const TYPE &y, const TYPE &z) : x(x), y(y), z(z) {}
 
-	Vector3 operator -(const Vector3 &vec) const
+	Vector3(const TYPE &value) : x(value), y(value), z(value) {}
+
+	Vector3(const Vector3 &vector) : x(vector.x), y(vector.y), z(vector.z) {}
+
+	Vector3 operator -(const Vector3 &vector) const
 	{	
-		Vector3 save;
-
-		save.x = x - vec.x;
-		save.y = y - vec.y;
-		save.z = z - vec.z;
-
-		return(save);
+		return Vector3(x - vector.x, y - vector.y, z - vector.z);
 	}
 
-	Vector3 operator +(const Vector3 &vec) const
+	Vector3 operator +(const Vector3 &vector) const
 	{
-		Vector3 save;
-
-		save.x = x + vec.x;
-		save.y = y + vec.y;
-		save.z = z + vec.z;
-
-		return(save);
+		return Vector3(x + vector.x, y + vector.y, z + vector.z)
 	}
 
-	Vector3 operator -=(const Vector3 &vec)
+	Vector3 operator -=(const Vector3 &vector)
 	{
 
-		x -= vec.x;
-		y -= vec.y;
-		z -= vec.z;
+		x -= vector.x;
+		y -= vector.y;
+		z -= vector.z;
 
 		return(*this);
 	}
 
-	Vector3 operator +=(const Vector3 &vec)
+	Vector3 operator +=(const Vector3 &vector)
 	{
 
-		x += vec.x;
-		y += vec.y;
-		z += vec.z;
+		x += vector.x;
+		y += vector.y;
+		z += vector.z;
 
 		return(*this);
 	}
@@ -73,7 +55,7 @@ public:
 		return(x != vec.x && y != vec.y && z != vec.z);
 	}
 
-	Vector3& Normalize()
+	void Normalize()
 	{
 		TYPE magnitude = sqrtf((x*x) + (y*y) + (z*z));
 		
@@ -81,28 +63,24 @@ public:
 		y = y / magnitude;
 		z = z / magnitude;
 
-		return(*this);
 	}
 
-	Vector3& zero()
+	void zero()
 	{
 		x = y = z = 0;
-		return(*this);
 	}
 
 	bool isZero() const
 	{
-		return(x == 0 && y == 0 && z == 0);
+		return(x == 0.0f && y == 0.0f && z == 0.0f);
 	}
 
-	TYPE DistanceTo(const Vector3& vec) const
+	TYPE DistanceTo(const Vector3& vector) const
 	{
-		TYPE newx = x - vec.x;
-		TYPE newx = y - vec.y;
-		TYPE newx = z - vec.z;
-
-		return(TYPE)sqrtf((newx*newx) + (newy*newy) + (newz + newz));
+		return sqrtf(((x - vector.x) * (x - vector.x)) + ((y - vector.y) * (y - vector.y)) + ((z - vector.z) * (z - vector.z)));
 	}
-
+	TYPE distance_to_nosqrt(const Vector3 &vector) const {
+		return ((x - vector.x) * (x - vector.x)) + ((y - vector.y) * (y - vector.y)) + ((z - vector.z) * (z - vector.z));
+	}
 };
-
+#endif
